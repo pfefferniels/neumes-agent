@@ -1,9 +1,7 @@
 import "./NeumeResults.css";
 
 export interface NeumeMatch {
-  id: string;
-  name: string;
-  description: string;
+  type: string;
   similarity: number;
 }
 
@@ -35,6 +33,7 @@ export function NeumeResults({
     return (
       <div className="neume-results">
         <p className="no-matches">No matching neumes found</p>
+        <p>{description}</p>
       </div>
     );
   }
@@ -52,17 +51,16 @@ export function NeumeResults({
           <div className="matches-list">
             {matches.map((match) => (
               <button
-                key={match.id}
+                key={match.type}
                 className="match-option"
                 onClick={() => onSelectNeume(match)}
               >
                 <div className="match-header">
-                  <span className="match-name">{match.name}</span>
+                  <span className="match-name">{match.type}</span>
                   <span className="match-similarity">
                     {(match.similarity * 100).toFixed(1)}% match
                   </span>
                 </div>
-                <p className="match-description">{match.description}</p>
               </button>
             ))}
           </div>
@@ -72,12 +70,11 @@ export function NeumeResults({
           <h3>Identified Neume</h3>
           <div className="result-card">
             <div className="result-header">
-              <span className="result-name">{matches[0]?.name}</span>
+              <span className="result-name">{matches[0]?.type}</span>
               <span className="result-similarity">
                 {((matches[0]?.similarity ?? 0) * 100).toFixed(1)}% match
               </span>
             </div>
-            <p className="result-description">{matches[0]?.description}</p>
           </div>
         </div>
       )}

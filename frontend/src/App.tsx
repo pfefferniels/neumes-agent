@@ -104,8 +104,8 @@ function App() {
                   <div className="selection-confirmed">
                     <h3>Selected Neume</h3>
                     <div className="confirmed-card">
-                      <span className="confirmed-name">{selectedNeume.name}</span>
-                      <p>{selectedNeume.description}</p>
+                      <span className="confirmed-name">{selectedNeume.type}</span>
+                      <p>{selectedNeume.type}</p>
                     </div>
                   </div>
                 ) : (

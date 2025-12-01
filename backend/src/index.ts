@@ -42,9 +42,7 @@ app.post("/api/analyze", upload.single("image"), async (req, res) => {
       success: true,
       description: result.description,
       matches: result.matches.map((m) => ({
-        id: m.neume.id,
-        name: m.neume.name,
-        description: m.neume.description,
+        type: m.neume.type,
         similarity: m.similarity,
       })),
       needsDisambiguation: result.needsDisambiguation,

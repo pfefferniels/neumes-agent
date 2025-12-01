@@ -22,19 +22,24 @@ export interface AnalysisResult {
  */
 export async function analyzeNeumeImage(imageBase64: string): Promise<string> {
   const response = await openai.responses.create({
-    model: "gpt-4o",
+    model: "gpt-5.1",
     input: [
       {
         role: "user",
         content: [
           {
             type: "input_text",
-            text: "You are an expert in medieval music notation, specifically Gregorian chant neumes. Analyze this image and describe the neume shape you see. Focus on:\n1. The overall shape (dots, lines, curves)\n2. The direction of movement (ascending, descending, or mixed)\n3. The number of notes represented\n4. Any distinctive features (waves, hooks, stems)\n\nProvide a detailed description of the neume shape without trying to identify its specific name.",
+            text: `
+For each pen stroke from top to bottom and left to right, describe in very few keywords:
+- its shape (e.g. dot, diagonal stroke, vertical line, horizontal line, s-shaped, c-shaped, t-shaped)
+- if helpful for identifying, the direction (e.g. from bottom left to top right; hook at bottom left)
+- relative position to other components (only if more than one stroke).
+Separate multiple stroke descriptions with semicolons.`.trim(),
           },
           {
             type: "input_image",
             image_url: `data:image/png;base64,${imageBase64}`,
-            detail: "high",
+            detail: "low",
           },
         ],
       },
@@ -49,7 +54,7 @@ export async function analyzeNeumeImage(imageBase64: string): Promise<string> {
  */
 async function getEmbedding(text: string): Promise<number[]> {
   const response = await openai.embeddings.create({
-    model: "text-embedding-3-small",
+    model: "text-embedding-3-large",
     input: text,
   });
 
@@ -95,7 +100,7 @@ export async function findMatchingNeumes(
 
   for (const neume of neumesLexicon) {
     // Create a comprehensive text for the neume
-    const neumeText = `${neume.name}: ${neume.description} Characteristics: ${neume.characteristics.join(", ")}`;
+    const neumeText = neume.shape;
     const neumeEmbedding = await getEmbedding(neumeText);
 
     const similarity = cosineSimilarity(descriptionEmbedding, neumeEmbedding);
