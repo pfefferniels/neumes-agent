@@ -1,0 +1,49 @@
+.region-selector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+.canvas-container {
+  max-width: 100%;
+  overflow: auto;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+}
+
+.selection-canvas {
+  cursor: crosshair;
+  max-width: 100%;
+  height: auto;
+}
+
+.instructions {
+  text-align: center;
+}
+
+.instructions p {
+  color: #666;
+  margin-bottom: 16px;
+}
+
+.analyze-button {
+  background-color: #4a90d9;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.analyze-button:hover {
+  background-color: #357abd;
+}
+
+.analyze-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

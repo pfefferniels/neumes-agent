@@ -1,0 +1,48 @@
+.image-uploader {
+  border: 2px dashed #ccc;
+  border-radius: 12px;
+  padding: 40px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: #fafafa;
+}
+
+.image-uploader:hover {
+  border-color: #4a90d9;
+  background-color: #f0f7ff;
+}
+
+.image-uploader.dragging {
+  border-color: #4a90d9;
+  background-color: #e6f0ff;
+}
+
+.upload-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.upload-icon {
+  width: 48px;
+  height: 48px;
+  color: #999;
+}
+
+.image-uploader:hover .upload-icon {
+  color: #4a90d9;
+}
+
+.upload-text {
+  font-size: 16px;
+  color: #333;
+  margin: 0;
+}
+
+.upload-hint {
+  font-size: 14px;
+  color: #999;
+  margin: 0;
+}

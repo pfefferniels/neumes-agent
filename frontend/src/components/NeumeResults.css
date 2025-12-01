@@ -1,0 +1,148 @@
+.neume-results {
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.neume-results.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 40px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #4a90d9;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.no-matches {
+  text-align: center;
+  color: #999;
+}
+
+.analysis-description {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #eee;
+}
+
+.analysis-description h3 {
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.analysis-description p {
+  color: #666;
+  line-height: 1.6;
+}
+
+.disambiguation h3 {
+  color: #e67e22;
+  margin-bottom: 16px;
+}
+
+.matches-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.match-option {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fafafa;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.match-option:hover {
+  border-color: #4a90d9;
+  background: #f0f7ff;
+}
+
+.match-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.match-name {
+  font-weight: 600;
+  font-size: 18px;
+  color: #333;
+}
+
+.match-similarity {
+  font-size: 14px;
+  color: #4a90d9;
+  background: #e6f0ff;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.match-description {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.single-result h3 {
+  color: #27ae60;
+  margin-bottom: 16px;
+}
+
+.result-card {
+  padding: 20px;
+  background: #f0fff4;
+  border: 2px solid #27ae60;
+  border-radius: 8px;
+}
+
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.result-name {
+  font-weight: 600;
+  font-size: 20px;
+  color: #333;
+}
+
+.result-similarity {
+  font-size: 14px;
+  color: #27ae60;
+  background: #d4edda;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.result-description {
+  color: #555;
+  line-height: 1.6;
+  margin: 0;
+}
