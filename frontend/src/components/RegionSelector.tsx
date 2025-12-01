@@ -23,17 +23,6 @@ export function RegionSelector({
   const [selection, setSelection] = useState<Selection | null>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  // Load image onto canvas
-  useEffect(() => {
-    const img = new Image();
-    img.onload = () => {
-      imageRef.current = img;
-      setImageLoaded(true);
-      drawCanvas();
-    };
-    img.src = imageSrc;
-  }, [imageSrc]);
-
   const drawCanvas = useCallback(() => {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
@@ -65,11 +54,21 @@ export function RegionSelector({
     }
   }, [selection]);
 
+  // Load image onto canvas
+  useEffect(() => {
+    const img = new Image();
+    img.onload = () => {
+      imageRef.current = img;
+      setImageLoaded(true);
+    };
+    img.src = imageSrc;
+  }, [imageSrc]);
+
   useEffect(() => {
     if (imageLoaded) {
       drawCanvas();
     }
-  }, [selection, imageLoaded, drawCanvas]);
+  }, [imageLoaded, drawCanvas]);
 
   const getMousePosition = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
