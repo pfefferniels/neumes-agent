@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>dudu</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+
+        #container {
+            float: left;
+        }
+
+        #inner {
+            position: relative;
+        }
+
+        #main-image {
+            max-width: 800px;
+            border: 1px solid #ccc;
+        }
+
+        #overlay {
+            position: absolute;
+            left: 0;
+            top: 0;
+            pointer-events: none;
+        }
+
+        #results {
+            margin-top: 20px;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>dudu</h2>
+    <main>
+        <div id="container">
+            <div id="inner">
+                <img id="main-image" src="/image" draggable="false" />
+                <canvas id="overlay"></canvas>
+            </div>
+        </div>
+        <div id="results"></div>
+    </main>
+
+    <script>
+        const img = document.getElementById('main-image');
+        const canvas = document.getElementById('overlay');
+        const results = document.getElementById('results');
+        const ctx = canvas.getContext('2d');
+
+        let dragging = false;
+        let startX = 0, startY = 0, curX = 0, curY = 0;
+
+        img.onload = function () {
+            // Match canvas size to displayed image size
+            canvas.width = img.width;
+            canvas.height = img.height;
+            canvas.style.width = img.width + "px";
+            canvas.style.height = img.height + "px";
+            canvas.style.pointerEvents = "none"; // we will listen on img
+            img.style.cursor = "crosshair";
+        };
+
+        img.addEventListener('dragstart', e => e.preventDefault());
+
+        function getMousePos(e) {
+            const rect = img.getBoundingClientRect();
+            return {
+                x: e.clientX - rect.left,
+                y: e.clientY - rect.top
+            };
+        }
+
+        img.addEventListener('mousedown', function (e) {
+            const pos = getMousePos(e);
+            dragging = true;
+            startX = pos.x;
+            startY = pos.y;
+            curX = pos.x;
+            curY = pos.y;
+        });
+
+        img.addEventListener('mousemove', function (e) {
+            if (!dragging) return;
+            const pos = getMousePos(e);
+            curX = pos.x;
+            curY = pos.y;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = "red";
+            ctx.lineWidth = 1.2;
+            ctx.strokeRect(startX, startY, curX - startX, curY - startY);
+        });
+
+        img.addEventListener('mouseup', function (e) {
+            if (!dragging) return;
+            dragging = false;
+            const pos = getMousePos(e);
+            curX = pos.x;
+            curY = pos.y;
+
+            console.log("Selected box:", startX, startY, curX, curY, pos.x, pos.y);
+
+            // Compute box in displayed coordinates
+            let x0 = Math.min(startX, curX);
+            let y0 = Math.min(startY, curY);
+            let x1 = Math.max(startX, curX);
+            let y1 = Math.max(startY, curY);
+
+            // Map to original image coordinates using naturalWidth/Height
+            const scaleX = img.naturalWidth / img.width;
+            const scaleY = img.naturalHeight / img.height;
+
+            x0 = Math.round(x0 * scaleX);
+            y0 = Math.round(y0 * scaleY);
+            x1 = Math.round(x1 * scaleX);
+            y1 = Math.round(y1 * scaleY);
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Send to backend
+            fetch("/classify", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ x0, y0, x1, y1 })
+            })
+                .then(r => r.json())
+                .then(data => {
+                    results.textContent = `${data.best} ${data.tokens.join(' ')} ${JSON.stringify(data.top_n)}`;
+                })
+                .catch(err => {
+                    results.textContent = "Error: " + err;
+                });
+        });
+    </script>
+</body>
+
+</html>
