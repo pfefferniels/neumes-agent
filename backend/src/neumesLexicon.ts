@@ -6,102 +6,104 @@
 export interface NeumeEntry {
   type: string;
   shape: string;
-  strokeCount: number;
+  traditions?: { [tradition: string]: string };
+  modifier?: boolean
 }
 
 export const neumesLexicon: NeumeEntry[] = [
   {
-    type: "punctum",
-    shape: "dot",
-    strokeCount: 1,
-  },
-  {
     type: "celeriter",
     shape: "c-shaped hook",
-    strokeCount: 1,
-  },
-  {
-    type: "pes",
-    shape: "curved stroke, starting with small hook from bottom left to top right; check-mark / swoosh",
-    strokeCount: 1,
-  },
-  {
-    type: "virga",
-    shape: "diagonal stroke from bottom left to top right",
-    strokeCount: 1,
-  },
-  {
-    type: "pes quadratus",
-    shape: "diagonal stroke from bottom left to top right; square hooks at both ends",
-    strokeCount: 1,
+    modifier: true,
   },
   {
     type: "tenete",
     shape: "t-shaped",
-    strokeCount: 1,
+    modifier: true,
+  },
+  {
+    type: "episema",
+    shape: "thicker emphasized head of a virga or pes, sometimes as pronounced hook – or a short horizontal stroke on the peak of a clivis",
+    modifier: true
+  },
+  {
+    type: "punctum",
+    shape: "dot",
+  },
+  {
+    type: "pes",
+    shape: "diagonal stroke bottom left to top right with curved hook at bottom left",
+    traditions: {
+      'csg-382': 'very pronounced curved hook on bottom left, overall shape almost like a lowercase d'
+    }
+  },
+  {
+    type: "virga",
+    shape: "diagonal stroke from bottom left to top right",
+  },
+  {
+    type: "virga",
+    shape: "Like virga but two times"
+  },
+  {
+    type: "pes quadratus",
+    shape: "diagonal stroke from bottom left to top right; square-ish hook at the bottom left",
+
   },
   {
     type: "pes subbipunctis",
-    shape: "curved stroke from bottom left to top right; hooks at bottom left; dot below; another dot below",
-    strokeCount: 3,
+    shape: "stroke from bottom left to top right, curved hook only at bottom left; two dots below",
   },
   {
     type: "pes quadratus subbipunctis",
-    shape: "diagonal stroke from bottom left to top right; square hooks at both ends; two dots below",
-    strokeCount: 3,
+    shape: "diagonal stroke from bottom left to top right with somewhat square hook at bottom left; two dots below",
+    traditions: {
+      'csg-382': 'excluded'
+    }
   },
   {
     type: "quilisma",
-    shape: "three small zig-zag strokes/loops",
-    strokeCount: 1,
+    shape: "three short hook-like waves followed by one longer stroke going upwards",
   },
   {
     type: "stropha",
     shape: "comma-shaped vertical stroke",
-    strokeCount: 1,
-  },
-  {
-    type: "tractulus",
-    shape: "horizontal line, like a dash",
-    strokeCount: 1,
-  },
-  {
-    type: "oriscus",
-    shape: "s-shaped curve",
-    strokeCount: 1,
-  },
-  {
-    type: "clivis",
-    shape: "curved stroke, inverted-U / arch-like. Rises from bottom left, peaks, then descends toward bottom right",
-    strokeCount: 1,
   },
   {
     type: "bistropha",
-    shape: "comma-shaped curve downwards; comma-shaped curve downwards, right of first",
-    strokeCount: 2,
+    shape: "two comma-shaped strokes downwards",
   },
+  {
+    type: "tractulus",
+    shape: "short horizontal line",
+  },
+  {
+    type: "oriscus",
+    shape: "upright S-shape, can have somewhat squarish elements",
+  },
+  {
+    type: "clivis",
+    shape: "unseparatedly going diagonally up and left, then diagonally left down, n-shaped, often slightly slanted to the right, so the line going down seems shorter. No dots",
+  },
+  {
+    type: "cephalicus",
+    shape: "p-like shape; vertical line with loop at top right",
+  },
+  {
+    type: "climacus",
+    shape: "Diagonal stroke bottom left to top right; two dots below",
+  },
+  {
+    type: "torculus",
+    shape: "Smotthly curved S-shape slightly angled to the right",
+  },
+  {
+    type: "pressus",
+    shape: "diagonal stroke going bottom left to top right, hook on the top right going downwards, followed by a distinct dot",
+  }
 ];
 
 export function getAllNeumeDescriptions(): string[] {
   return neumesLexicon.map((neume) => `${neume.type}: ${neume.shape}`);
 }
 
-/**
- * Get neumes filtered by stroke count
- */
-export function getNeumesByStrokeCount(strokeCount: number): NeumeEntry[] {
-  return neumesLexicon.filter((neume) => neume.strokeCount === strokeCount);
-}
-
-/**
- * Get neumes within a stroke count range (for flexibility)
- */
-export function getNeumesByStrokeCountRange(
-  minStrokes: number,
-  maxStrokes: number
-): NeumeEntry[] {
-  return neumesLexicon.filter(
-    (neume) =>
-      neume.strokeCount >= minStrokes && neume.strokeCount <= maxStrokes
-  );
-}

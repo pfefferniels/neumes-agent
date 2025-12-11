@@ -7,18 +7,11 @@ import type { NeumeMatch } from "./components/NeumeResults";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
-interface AnalysisResponse {
-  success: boolean;
-  description: string;
-  matches: NeumeMatch[];
-  needsDisambiguation: boolean;
-}
-
 function App() {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [analysisResult, setAnalysisResult] =
-    useState<AnalysisResponse | null>(null);
+    useState<NeumeMatch[] | null>(null);
   const [selectedNeume, setSelectedNeume] = useState<NeumeMatch | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -47,8 +40,8 @@ function App() {
         throw new Error(`Analysis failed: ${response.statusText}`);
       }
 
-      const result: AnalysisResponse = await response.json();
-      setAnalysisResult(result);
+      const matches: NeumeMatch[] = await response.json();
+      setAnalysisResult(matches);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
@@ -69,11 +62,6 @@ function App() {
 
   return (
     <div className="app">
-      <header className="app-header">
-        <h1>Neumes Agent</h1>
-        <p>AI-powered medieval music notation identifier</p>
-      </header>
-
       <main className="app-main">
         {!imageSrc ? (
           <ImageUploader onImageLoaded={handleImageLoaded} />
@@ -111,11 +99,7 @@ function App() {
                 ) : (
                   (isLoading || analysisResult) && (
                     <NeumeResults
-                      description={analysisResult?.description || ""}
-                      matches={analysisResult?.matches || []}
-                      needsDisambiguation={
-                        analysisResult?.needsDisambiguation || false
-                      }
+                      matches={analysisResult || []}
                       onSelectNeume={handleSelectNeume}
                       isLoading={isLoading}
                     />

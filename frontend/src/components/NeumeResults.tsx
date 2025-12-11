@@ -2,21 +2,19 @@ import "./NeumeResults.css";
 
 export interface NeumeMatch {
   type: string;
-  similarity: number;
+  modifiers?: string[];
+  uncertainty?: string;
+  alternatives?: string[];
 }
 
 interface NeumeResultsProps {
-  description: string;
   matches: NeumeMatch[];
-  needsDisambiguation: boolean;
   onSelectNeume: (neume: NeumeMatch) => void;
   isLoading: boolean;
 }
 
 export function NeumeResults({
-  description,
   matches,
-  needsDisambiguation,
   onSelectNeume,
   isLoading,
 }: NeumeResultsProps) {
@@ -33,51 +31,40 @@ export function NeumeResults({
     return (
       <div className="neume-results">
         <p className="no-matches">No matching neumes found</p>
-        <p>{description}</p>
       </div>
     );
   }
 
   return (
     <div className="neume-results">
-      <div className="analysis-description">
-        <h3>AI Analysis</h3>
-        <p>{description}</p>
-      </div>
+      <div className="disambiguation">
+        <div className="matches-list">
+          {matches.map((match) => (
+            <button
+              key={match.type}
+              className="match-option"
+              onClick={() => onSelectNeume(match)}
+            >
+              <div className="match-header">
+                <span className="match-name">{match.type} {match.modifiers && match.modifiers.join(',')}</span>
+                <span className="match-similarity">
+                  {match.uncertainty}
+                </span>
 
-      {needsDisambiguation ? (
-        <div className="disambiguation">
-          <h3>Multiple matches found - please select the best match:</h3>
-          <div className="matches-list">
-            {matches.map((match) => (
-              <button
-                key={match.type}
-                className="match-option"
-                onClick={() => onSelectNeume(match)}
-              >
-                <div className="match-header">
-                  <span className="match-name">{match.type}</span>
-                  <span className="match-similarity">
-                    {(match.similarity * 100).toFixed(1)}% match
-                  </span>
+                <div>
+                  {match.alternatives && match.alternatives.map((d) => (
+                    <div key={d} className="disambiguation-item">
+                      <button className="match-option">
+                        {d}
+                      </button>
+                    </div>
+                  ))}
                 </div>
-              </button>
-            ))}
-          </div>
+              </div>
+            </button>
+          ))}
         </div>
-      ) : (
-        <div className="single-result">
-          <h3>Identified Neume</h3>
-          <div className="result-card">
-            <div className="result-header">
-              <span className="result-name">{matches[0]?.type}</span>
-              <span className="result-similarity">
-                {((matches[0]?.similarity ?? 0) * 100).toFixed(1)}% match
-              </span>
-            </div>
-          </div>
-        </div>
-      )}
+      </div>
     </div>
   );
 }

@@ -151,6 +151,13 @@ export function RegionSelector({
 
   return (
     <div className="region-selector">
+      <div>
+        {selection && (
+          <button onClick={handleExtractRegion} className="analyze-button">
+            Analyze
+          </button>
+        )}
+      </div>
       <div className="canvas-container">
         <canvas
           ref={canvasRef}
@@ -160,14 +167,6 @@ export function RegionSelector({
           onMouseLeave={handleMouseUp}
           className="selection-canvas"
         />
-      </div>
-      <div className="instructions">
-        <p>Click and drag to select a region containing a neume</p>
-        {selection && (
-          <button onClick={handleExtractRegion} className="analyze-button">
-            Analyze Selected Region
-          </button>
-        )}
       </div>
     </div>
   );

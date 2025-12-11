@@ -37,16 +37,10 @@ app.post("/api/analyze", upload.single("image"), async (req, res) => {
     }
 
     const result = await analyzeAndMatchNeume(imageBase64);
+    res.json(result);
 
-    res.json({
-      success: true,
-      description: result.description,
-      matches: result.matches.map((m) => ({
-        type: m.neume.type,
-        similarity: m.similarity,
-      })),
-      needsDisambiguation: result.needsDisambiguation,
-    });
+    // const result = await analyze(imageBase64);
+    // res.send(result);
   } catch (error) {
     console.error("Analysis error:", error);
     res.status(500).json({
