@@ -1,0 +1,5 @@
+pes: ['d', 'd', 'u', 'u', 'u', 'u']
+clivis: ['u', 'u', 'u', 'd', 'd']
+torculus: ['d', 'd', 'd', 'u', 'u', 'u', 'u', 'u', 'd', 'd', 'd']
+virga: ['u', 'u', 'u', 'u', 'u']
+pressus: ['u', 'u', 'u', 'u', 'u', 's', 'u'], ["0"]
